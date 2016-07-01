@@ -47,3 +47,12 @@ import QAsyncImageView
 let imageView = UIImageView(frame: CGRectMake(100, 50, imageWidth, imageWidth))
 imageView.loadAsync("https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg")
 ```
+
+### Get Image from URL with placeholder image:
+
+```
+import QAsyncImageView
+
+let imageView = UIImageView(frame: CGRectMake(100, 50, imageWidth, imageWidth))
+imageView.loadAsync("https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg", placeholderImage: UIImage(named: "placeholder"))
+```
