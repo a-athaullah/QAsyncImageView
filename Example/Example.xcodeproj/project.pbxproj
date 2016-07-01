@@ -357,6 +357,7 @@
 				39F8068D1D2528A000FAD0FE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
