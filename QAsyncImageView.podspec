@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
 
 s.name         = "QAsyncImageView"
-s.version      = "0.0.1"
+s.version      = "0.0.2"
 s.summary      = "Simple UIImageView extension to loadAsync image"
 
 s.description  = <<-DESC
 Simple UIImageView extension to load image from URL asynchronously.
 DESC
 
-s.homepage     = "http://qisc.us"
+s.homepage     = "https://github.com/a-athaullah/QAsyncImageView"
 
 s.license      = "MIT"
 s.author       = "Ahmad Athaullah"
