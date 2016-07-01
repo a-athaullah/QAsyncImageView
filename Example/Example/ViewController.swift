@@ -51,7 +51,7 @@ class ViewController: UIViewController {
         button2.titleLabel?.font = UIFont.systemFontOfSize(12)
         self.view.addSubview(button2)
         
-        imageView.frame = CGRectMake(50, 180, imageWidth, imageWidth)
+        imageView.frame = CGRectMake(50, 175, imageWidth, imageWidth)
         imageView.backgroundColor = lightGrey
         imageView.layer.cornerRadius = 4
         imageView.layer.borderColor = darkGrey.CGColor
@@ -59,6 +59,13 @@ class ViewController: UIViewController {
         imageView.contentMode = UIViewContentMode.ScaleAspectFit
         self.view.addSubview(imageView)
         
+        let infoLabel = UILabel(frame: CGRectMake(15, 175 + imageWidth + 15, textWidth, 50))
+        infoLabel.text = "Only support secure image URL (with https protocol), if you need to load from non secure URL you need to whitelist that URL in your plist.info file"
+        infoLabel.numberOfLines = 0
+        infoLabel.textAlignment = NSTextAlignment.Center
+        infoLabel.font = UIFont.systemFontOfSize(11, weight: 1)
+        infoLabel.textColor = darkGrey
+        self.view.addSubview(infoLabel)
         
         // Do any additional setup after loading the view, typically from a nib.
     }
