@@ -36,3 +36,14 @@ Then, run the following command:
 ```
 $ pod install
 ```
+
+## Usage
+
+### Get Image from URL
+
+```
+import QAsyncImageView
+
+let imageView = UIImageView(frame: CGRectMake(100, 50, imageWidth, imageWidth))
+imageView.loadAsync("https://static.pexels.com/photos/4062/landscape-mountains-nature-lake.jpeg")
+```
