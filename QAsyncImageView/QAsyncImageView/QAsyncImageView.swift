@@ -28,6 +28,7 @@ public extension UIImageView {
     //  extension
     //
     //  Created by Nate Lyman on 7/5/14.
+    //  git: https://github.com/natelyman/SwiftImageLoader
     //  Copyright (c) 2014 NateLyman.com. All rights reserved.
     //
     func imageForUrl(urlString: String, completionHandler:(image: UIImage?, url: String) -> ()) {
