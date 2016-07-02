@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:QAsyncImageView.podspec">
+   </FileRef>
+   <FileRef
       location = "group:QAsyncImageView/QAsyncImageView.xcodeproj">
    </FileRef>
    <FileRef
