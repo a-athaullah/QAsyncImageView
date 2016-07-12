@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "QAsyncImageView"
-s.version      = "0.0.6"
+s.version      = "0.0.7"
 s.summary      = "Simple UIImageView extension to loadAsync image"
 
 s.description  = <<-DESC
