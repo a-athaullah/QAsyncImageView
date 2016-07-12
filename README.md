@@ -6,6 +6,7 @@ QAsyncImageView is a extented UIImageView library written in Swift.
 
 - Load image from URL Asynchronously
 - Load image from URL with Header Asynchronously
+- Optional use of cache image
 
 ## Requirements
 
