@@ -48,7 +48,7 @@ public extension UIImageView {
                 let mutableRequest = NSMutableURLRequest(URL: url!)
                 
                 for (key, value) in header {
-                    mutableRequest.setValue(key, forHTTPHeaderField: value)
+                    mutableRequest.setValue(value, forHTTPHeaderField: key)
                 }
                 
                 let downloadTask: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(mutableRequest, completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
