@@ -23,7 +23,9 @@ public extension UIImageView {
             self.image = nil
         }
         imageForUrl(url, header: header, useCache: useCache, completionHandler:{(image: UIImage?, url: String) in
-            self.image = image
+                if image != nil {
+                    self.image = image
+                }
             })
     }
     
@@ -75,5 +77,13 @@ public extension UIImageView {
                 downloadTask.resume()
             }
         })
+    }
+}
+public extension UIImage {
+    public class func clearAllCache(){
+        cache.removeAllObjects()
+    }
+    public class func clearCachedImageForURL(urlString:String){
+        cache.removeObjectForKey(urlString)
     }
 }
