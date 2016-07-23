@@ -56,20 +56,26 @@ public extension UIImageView {
                 let downloadTask: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(mutableRequest, completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
                     if (error != nil) {
                         completionHandler(image: nil, url: urlString)
+                        print("[QAsyncImageView] : \(error)")
                         return
                     }
                     
                     if let data = data {
-                        let image = UIImage(data: data)
-                        if useCache{
-                            cache.setObject(image!, forKey: urlString)
+                        if let image = UIImage(data: data) {
+                            if useCache{
+                                cache.setObject(image, forKey: urlString)
+                            }else{
+                                cache.removeObjectForKey(urlString)
+                            }
+                            dispatch_async(dispatch_get_main_queue(), {() in
+                                completionHandler(image: image, url: urlString)
+                            })
                         }else{
-                            cache.removeObjectForKey(urlString)
+                            dispatch_async(dispatch_get_main_queue(), {() in
+                                completionHandler(image: nil, url: urlString)
+                            })
+                            print("[QAsyncImageView] : Can't get image from URL: \(url)")
                         }
-                        dispatch_async(dispatch_get_main_queue(), {() in
-                            
-                            completionHandler(image: image, url: urlString)
-                        })
                         return
                     }
                     
