@@ -5,7 +5,7 @@ s.version      = "0.1.1"
 s.summary      = "Simple UIImageView extension to loadAsync image"
 
 s.description  = <<-DESC
-Simple UIImageView extension to load image from URL asynchronously.
+Simple UIImageView extension to load image from URL asynchronously (xCode 7.3).
 DESC
 
 s.homepage     = "https://github.com/a-athaullah/QAsyncImageView"
