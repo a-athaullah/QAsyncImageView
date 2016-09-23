@@ -48,14 +48,14 @@ public extension UIImageView {
         let imageReference = scaledImage.CGImage
         let maskReference = mask.CGImage
         
-        let imageMask = CGImageMaskCreate(CGImageGetWidth(maskReference),
-                                          CGImageGetHeight(maskReference),
-                                          CGImageGetBitsPerComponent(maskReference),
-                                          CGImageGetBitsPerPixel(maskReference),
-                                          CGImageGetBytesPerRow(maskReference),
-                                          CGImageGetDataProvider(maskReference), nil, false)
+        let imageMask = CGImageMaskCreate(CGImageGetWidth(maskReference!),
+                                          CGImageGetHeight(maskReference!),
+                                          CGImageGetBitsPerComponent(maskReference!),
+                                          CGImageGetBitsPerPixel(maskReference!),
+                                          CGImageGetBytesPerRow(maskReference!),
+                                          CGImageGetDataProvider(maskReference!)!, nil, false)
         
-        let maskedReference = CGImageCreateWithMask(imageReference, imageMask)
+        let maskedReference = CGImageCreateWithMask(imageReference!, imageMask!)
         
         let maskedImage = UIImage(CGImage:maskedReference!)
         
@@ -164,7 +164,7 @@ public extension UIImage {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
     }
     
 }
