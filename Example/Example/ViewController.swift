@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         button1.backgroundColor = baseColor
         button1.setTitle("Load Image Without Placeholder", forState: UIControlState.Normal)
         button1.layer.cornerRadius = 3
-        button1.addTarget(self, action: "loadWithoutPlaceholder", forControlEvents: UIControlEvents.TouchUpInside)
+        button1.addTarget(self, action: #selector(ViewController.loadWithoutPlaceholder), forControlEvents: UIControlEvents.TouchUpInside)
         button1.titleLabel?.font = UIFont.systemFontOfSize(12)
         self.view.addSubview(button1)
         
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         button2.backgroundColor = baseColor
         button2.setTitle("Load Image With Placeholder", forState: UIControlState.Normal)
         button2.layer.cornerRadius = 3
-        button2.addTarget(self, action: "loadWithPlaceholder", forControlEvents: UIControlEvents.TouchUpInside)
+        button2.addTarget(self, action: #selector(ViewController.loadWithPlaceholder), forControlEvents: UIControlEvents.TouchUpInside)
         button2.titleLabel?.font = UIFont.systemFontOfSize(12)
         self.view.addSubview(button2)
         
