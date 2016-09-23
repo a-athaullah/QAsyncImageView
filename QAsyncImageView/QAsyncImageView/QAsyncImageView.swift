@@ -9,14 +9,13 @@
 import UIKit
 import Foundation
 
-var cache = NSCache()
-
-public class QAsyncImageView: UIImageView {
+var cache = NSCache<NSString,UIImage>()
+open class QAsyncImageView: UIImageView {
     
     
 }
 public extension UIImageView {
-    public func loadAsync(url:String, placeholderImage:UIImage? = nil, header : [String : String] = [String : String](), useCache:Bool = true, maskImage:UIImage? = nil){
+    public func loadAsync(_ url:String, placeholderImage:UIImage? = nil, header : [String : String] = [String : String](), useCache:Bool = true, maskImage:UIImage? = nil){
         var returnImage = UIImage()
         if placeholderImage != nil {
             if maskImage != nil{
@@ -29,7 +28,8 @@ public extension UIImageView {
         }else{
             self.image = nil
         }
-        imageForUrl(url, header: header, useCache: useCache, completionHandler:{(image: UIImage?, url: String) in
+        imageForUrl(url: url, header: header, useCache: useCache, completionHandler:{(image: UIImage?, url: String) in
+            print("image url: \(url)    ---   image is nil = \(image == nil)")
             if image != nil {
                 if maskImage != nil{
                     print("here")
@@ -42,22 +42,22 @@ public extension UIImageView {
         })
     }
     
-    public class func maskImage(image:UIImage, mask:(UIImage))->UIImage{
+    public class func maskImage(_ image:UIImage, mask:(UIImage))->UIImage{
         
         let scaledImage = UIImage.resizeImage(image, toFillOnImage: mask)
-        let imageReference = scaledImage.CGImage
-        let maskReference = mask.CGImage
+        let imageReference = scaledImage.cgImage
+        let maskReference = mask.cgImage
         
-        let imageMask = CGImageMaskCreate(CGImageGetWidth(maskReference),
-                                          CGImageGetHeight(maskReference),
-                                          CGImageGetBitsPerComponent(maskReference),
-                                          CGImageGetBitsPerPixel(maskReference),
-                                          CGImageGetBytesPerRow(maskReference),
-                                          CGImageGetDataProvider(maskReference), nil, false)
+        let imageMask = CGImage(maskWidth: (maskReference?.width)!,
+                                          height: (maskReference?.height)!,
+                                          bitsPerComponent: (maskReference?.bitsPerComponent)!,
+                                          bitsPerPixel: (maskReference?.bitsPerPixel)!,
+                                          bytesPerRow: (maskReference?.bytesPerRow)!,
+                                          provider: (maskReference?.dataProvider!)!, decode: nil, shouldInterpolate: false)
         
-        let maskedReference = CGImageCreateWithMask(imageReference, imageMask)
+        let maskedReference = imageReference?.masking(imageMask!)
         
-        let maskedImage = UIImage(CGImage:maskedReference!)
+        let maskedImage = UIImage(cgImage:maskedReference!)
         
         return maskedImage
     }
@@ -67,28 +67,31 @@ public extension UIImageView {
     //              git: https://github.com/natelyman/SwiftImageLoader
     //              Copyright (c) 2014 NateLyman.com. All rights reserved.
     //
-    func imageForUrl(urlString: String, header: [String : String] = [String : String](), useCache:Bool = true, completionHandler:(image: UIImage?, url: String) -> ()) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), {()in
-            
-            let image = cache.objectForKey(urlString) as? UIImage
+    func imageForUrl(url urlString: String, header: [String : String] = [String : String](), useCache:Bool = true, completionHandler:@escaping (_ image: UIImage?, _ url: String) -> ()) {
+        
+        DispatchQueue.main.async(execute: {()in
+            let image = cache.object(forKey: urlString as NSString)
             
             if useCache && (image != nil) {
-                dispatch_async(dispatch_get_main_queue(), {() in
-                    completionHandler(image: image, url: urlString)
+                DispatchQueue.main.sync(execute: {() in
+                    completionHandler(image, urlString)
                 })
                 return
             }else{
                 
-                let url = NSURL(string: urlString)
-                let mutableRequest = NSMutableURLRequest(URL: url!)
+                
+                let url = URL(string: urlString)
+                var urlRequest = URLRequest(url: url!)
                 
                 for (key, value) in header {
-                    mutableRequest.setValue(value, forHTTPHeaderField: key)
+                    urlRequest.addValue(value, forHTTPHeaderField: key)
                 }
                 
-                let downloadTask: NSURLSessionDataTask = NSURLSession.sharedSession().dataTaskWithRequest(mutableRequest, completionHandler: {(data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+                
+                let downloadTask = URLSession.shared.dataTask(with: urlRequest, completionHandler: {(data: Data?, response: URLResponse?, error: Error?) -> Void in
+                
                     if (error != nil) {
-                        completionHandler(image: nil, url: urlString)
+                        completionHandler(nil, urlString)
                         print("[QAsyncImageView] : \(error)")
                         return
                     }
@@ -96,21 +99,22 @@ public extension UIImageView {
                     if let data = data {
                         if let image = UIImage(data: data) {
                             if useCache{
-                                cache.setObject(image, forKey: urlString)
+                                cache.setObject(image, forKey: urlString as NSString)
                             }else{
-                                cache.removeObjectForKey(urlString)
+                                cache.removeObject(forKey: urlString as NSString)
                             }
-                            dispatch_async(dispatch_get_main_queue(), {() in
-                                completionHandler(image: image, url: urlString)
+                            DispatchQueue.main.sync(execute: {() in
+                                completionHandler(image, urlString)
                             })
                         }else{
-                            dispatch_async(dispatch_get_main_queue(), {() in
-                                completionHandler(image: nil, url: urlString)
+                            DispatchQueue.main.sync(execute: {() in
+                                completionHandler(nil, urlString)
                             })
                             print("[QAsyncImageView] : Can't get image from URL: \(url)")
                         }
                         return
                     }
+                    return ()
                     
                 })
                 downloadTask.resume()
@@ -122,10 +126,10 @@ public extension UIImage {
     public class func clearAllCache(){
         cache.removeAllObjects()
     }
-    public class func clearCachedImageForURL(urlString:String){
-        cache.removeObjectForKey(urlString)
+    public class func clearCachedImageForURL(_ urlString:String){
+        cache.removeObject(forKey: urlString as NSString)
     }
-    public class func resizeImage(image: UIImage, toFillOnImage: UIImage) -> UIImage {
+    public class func resizeImage(_ image: UIImage, toFillOnImage: UIImage) -> UIImage {
         
         var scale:CGFloat = 1
         var newSize:CGSize = toFillOnImage.size
@@ -160,11 +164,11 @@ public extension UIImage {
         if (image.size.height * scale) > toFillOnImage.size.height{
             yPos = ((image.size.height * scaleFactor) - toFillOnImage.size.height) / 2
         }
-        image.drawInRect(CGRectMake(0 - xPos,0 - yPos, image.size.width * scaleFactor, image.size.height * scaleFactor))
+        image.draw(in: CGRect(x: 0 - xPos,y: 0 - yPos, width: image.size.width * scaleFactor, height: image.size.height * scaleFactor))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         
-        return newImage
+        return newImage!
     }
     
 }

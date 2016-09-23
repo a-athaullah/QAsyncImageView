@@ -23,47 +23,47 @@ class ViewController: UIViewController {
         
         self.title = "QAsyncImageView Demo"
         
-        let imageWidth = UIScreen.mainScreen().bounds.size.width - 100
-        let textWidth = UIScreen.mainScreen().bounds.size.width - 30
+        let imageWidth = UIScreen.main.bounds.size.width - 100
+        let textWidth = UIScreen.main.bounds.size.width - 30
         
-        urlField.frame = CGRectMake(15, 15, textWidth, 40)
+        urlField.frame = CGRect(x: 15, y: 15, width: textWidth, height: 40)
         urlField.placeholder = "Put your image url here ..."
-        urlField.font = UIFont.systemFontOfSize(13)
+        urlField.font = UIFont.systemFont(ofSize: 13)
         urlField.layer.cornerRadius = 3
-        urlField.layer.borderColor = darkGrey.CGColor
+        urlField.layer.borderColor = darkGrey.cgColor
         urlField.backgroundColor = lightGrey
-        urlField.textAlignment = NSTextAlignment.Center
+        urlField.textAlignment = NSTextAlignment.center
         self.view.addSubview(urlField)
         
-        let button1 = UIButton(frame: CGRectMake(15, 70, textWidth, 30))
+        let button1 = UIButton(frame: CGRect(x: 15, y: 70, width: textWidth, height: 30))
         button1.backgroundColor = baseColor
-        button1.setTitle("Load Image Without Placeholder", forState: UIControlState.Normal)
+        button1.setTitle("Load Image Without Placeholder", for: UIControlState())
         button1.layer.cornerRadius = 3
-        button1.addTarget(self, action: "loadWithoutPlaceholder", forControlEvents: UIControlEvents.TouchUpInside)
-        button1.titleLabel?.font = UIFont.systemFontOfSize(12)
+        button1.addTarget(self, action: #selector(ViewController.loadWithoutPlaceholder), for: UIControlEvents.touchUpInside)
+        button1.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         self.view.addSubview(button1)
         
-        let button2 = UIButton(frame: CGRectMake(15, 110, textWidth, 30))
+        let button2 = UIButton(frame: CGRect(x: 15, y: 110, width: textWidth, height: 30))
         button2.backgroundColor = baseColor
-        button2.setTitle("Load Image With Placeholder", forState: UIControlState.Normal)
+        button2.setTitle("Load Image With Placeholder", for: UIControlState())
         button2.layer.cornerRadius = 3
-        button2.addTarget(self, action: "loadWithPlaceholder", forControlEvents: UIControlEvents.TouchUpInside)
-        button2.titleLabel?.font = UIFont.systemFontOfSize(12)
+        button2.addTarget(self, action: #selector(ViewController.loadWithPlaceholder), for: UIControlEvents.touchUpInside)
+        button2.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         self.view.addSubview(button2)
         
-        imageView.frame = CGRectMake(50, 175, imageWidth, imageWidth)
+        imageView.frame = CGRect(x: 50, y: 175, width: imageWidth, height: imageWidth)
         imageView.backgroundColor = lightGrey
         imageView.layer.cornerRadius = 4
-        imageView.layer.borderColor = darkGrey.CGColor
+        imageView.layer.borderColor = darkGrey.cgColor
         imageView.clipsToBounds = true
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
         self.view.addSubview(imageView)
         
-        let infoLabel = UILabel(frame: CGRectMake(15, 175 + imageWidth + 15, textWidth, 50))
+        let infoLabel = UILabel(frame: CGRect(x: 15, y: 175 + imageWidth + 15, width: textWidth, height: 50))
         infoLabel.text = "Only support secure image URL (with https protocol), if you need to load from non secure URL you need to whitelist that URL in your plist.info file"
         infoLabel.numberOfLines = 0
-        infoLabel.textAlignment = NSTextAlignment.Center
-        infoLabel.font = UIFont.systemFontOfSize(11, weight: 1)
+        infoLabel.textAlignment = NSTextAlignment.center
+        infoLabel.font = UIFont.systemFont(ofSize: 11, weight: 1)
         infoLabel.textColor = darkGrey
         self.view.addSubview(infoLabel)
         
